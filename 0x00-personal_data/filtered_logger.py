@@ -10,6 +10,5 @@ def filter_datum(fields: List[str], redaction: str, message: List[str],
     """
     for field in fields:
         pattern = re.compile(f"({field}=)([^;{separator}]*)")
-        # Substitute the PII data with the redaction string
         message = pattern.sub(rf"\1{redaction}", message)
     return message
