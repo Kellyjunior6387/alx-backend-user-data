@@ -6,6 +6,10 @@ from typing import List
 import os
 import mysql.connector
 from mysql.connector import Error
+patterns = {
+    'extractor': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
+    'replacer': lambda x: r'\g<field>={}'.format(x),
+}
 PII_FIELDS = ('name', 'ssn', 'password', 'email', 'phone')
 
 
@@ -13,8 +17,8 @@ def filter_datum(fields: List[str], redaction: str, message: List[str],
                  separator: str):
     """Function to replace PI with obsufucated fields
     """
-    return re.sub(rf"({'|'.join(fields)})=([^;{separator}]*)", lambda m:
-                  f"{m.group(1)}={redaction}", message)
+    extract, replace = (patterns["extracter"], patterns["replacer"])
+    return re.sub(extract(fields, separator), replace(redaction), message)
 
 
 class RedactingFormatter(logging.Formatter):
