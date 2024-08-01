@@ -5,6 +5,7 @@ import logging
 from typing import List
 import os
 import mysql.connector
+from mysql.connector import Error
 PII_FIELDS = ('name', 'ssn', 'password', 'email', 'phone')
 
 
@@ -59,5 +60,11 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         'host': os.environ.get('PERSONAL_DATA_DB_HOST'),
         'database': os.environ.get('PERSONAL_DATA_DB_NAME')
     }
-    conn = mysql.connector.connect(**config)
-    return conn
+    if not config['database']:
+        raise ValueError('Database not provided')
+    try:
+        conn = mysql.connector.connect(**config)
+        return conn
+    except Error:
+        print(Error)
+        raise
