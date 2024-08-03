@@ -1,0 +1,21 @@
+name: Python Style Check
+
+on: [push]
+
+jobs:
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out repository code
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # Use Python 3.x
+
+    - name: Install Pycodestyle
+      run: pip install pycodestyle==2.5
+
+    - name: Check Python style
+      run: pycodestyle --version && pycodestyle .
