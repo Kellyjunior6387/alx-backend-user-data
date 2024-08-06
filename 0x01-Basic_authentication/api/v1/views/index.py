@@ -27,14 +27,14 @@ def stats() -> str:
 
 
 @app_views.route('/unauthorized/', strict_slashes=False)
-def unauthorised_testing() -> str:
+def unauthorised_testing() -> None:
     """ Function to test the unauthorised handler
     """
     abort(401)
 
 
 @app_views.route('/forbidden/', strict_slashes=False)
-def forbidden_testing() -> str:
+def forbidden_testing() -> None:
     """ Function to test the unauthorised handler
     """
     abort(403)
