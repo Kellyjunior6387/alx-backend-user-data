@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""Module to implement Basic authentication"""
+from api.v1.auth.auth import Auth
+
+
+class BasicAuth(Auth):
+    """Inherits for Auth
+    """
+    def extract_base64_authorization_header(self, authorization_header:
+                                            str) -> str:
+        if authorization_header and isinstance(authorization_header, str):
+            if authorization_header.startswith('Basic '):
+                return authorization_header.strip('Basic ')
+        return None
