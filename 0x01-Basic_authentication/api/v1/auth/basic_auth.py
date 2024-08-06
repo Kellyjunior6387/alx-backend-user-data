@@ -4,11 +4,13 @@ from auth import Auth
 
 
 class BasicAuth(Auth):
-    """Inherits from Auth and encode and decode headers.
+    """
+    Inherits from Auth and encode and decode headers.
     """
     def extract_base64_authorization_header(self, authorization_header:
                                             str) -> str:
-        """Returns the Base64 part of the Authorization header
+        """
+        Returns the Base64 part of the Authorization header
         for a Basic Authentication
         """
         if authorization_header and isinstance(authorization_header, str):
