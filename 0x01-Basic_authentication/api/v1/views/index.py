@@ -29,6 +29,8 @@ def stats() -> str:
 @app_views.route('/unauthorized/', strict_slashes=False)
 def unauthorised_testing() -> None:
     """ Function to test the unauthorised handler
+     Return:
+      - the number of each objects
     """
     abort(401)
 
@@ -36,5 +38,7 @@ def unauthorised_testing() -> None:
 @app_views.route('/forbidden/', strict_slashes=False)
 def forbidden_testing() -> None:
     """ Function to test the unauthorised handler
+     Return:
+      - the number of each objects
     """
     abort(403)
