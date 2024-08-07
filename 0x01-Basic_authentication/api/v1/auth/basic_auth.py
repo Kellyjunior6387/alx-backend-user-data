@@ -2,7 +2,7 @@
 """
 Module to implement Basic authentication Module to implement Basic authentication 
 """
-from auth import Auth
+from api.v1.auth.auth import Auth
 
 
 class BasicAuth(Auth):
