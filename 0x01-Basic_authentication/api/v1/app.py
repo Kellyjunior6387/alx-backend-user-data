@@ -45,11 +45,10 @@ def forbidden(error) -> str:
     """
     return jsonify({"error": "Forbidden"}), 403
 
-
+"""
 @app.before_request
 def before_request():
-    """ Executes before the request
-    """
+     Executes before the request
     if auth is None:
         return
     # List of paths that do not require authentication
@@ -64,7 +63,7 @@ def before_request():
     # Check if the current user is valid
     if auth.current_user(request) is None:
         abort(403)
-
+"""
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
