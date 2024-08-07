@@ -2,6 +2,7 @@
 """Session authentication module for the API.
 """
 from uuid import uuid4
+from models.user import User
 from .auth import Auth
 
 
@@ -22,3 +23,10 @@ class SessionAuth(Auth):
         """ Retrieves a user_idbased on the session id"""
         if type(session_id) is str:
             return self.user_id_by_session_id.get(session_id, None)
+
+    def current_user(self, request=None):
+        if request:
+            cookie = self.session_cookie(request)
+            user_id = self.user_id_for_session_id(cookie)
+            user = User.get(user_id)
+            return user
