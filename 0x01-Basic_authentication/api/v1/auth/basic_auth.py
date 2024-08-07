@@ -6,6 +6,8 @@ Basic authentication
 from api.v1.auth.auth import Auth
 import binascii
 import base64
+from typing import Tuple, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -34,3 +36,34 @@ class BasicAuth(Auth):
                 return res.decode('utf-8')
             except (binascii.Error):
                 return None
+
+    def extract_user_credentials(self, decoded_base64_authorization_header:
+                                 str) -> Tuple[str, str]:
+        if isinstance(decoded_base64_authorization_header, str):
+            if ':' in decoded_base64_authorization_header:
+                user = decoded_base64_authorization_header.split(':', 1)
+                return (user[0], user[1])
+        return (None, None)
+
+    def user_object_from_credentials(self, user_email: str, user_pwd:
+                                     str) -> TypeVar('User'):
+        """
+        Return an instance of the user with matching email
+        and password
+        """
+        if isinstance(user_email, str) and isinstance(user_pwd, str):
+            try:
+                users = User.search({'email': user_email})
+            except Exception:
+                return None
+            if len(users) > 0:
+                if users[0].is_valid_password(user_pwd):
+                    return users[0]
+        return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        auth_header = self.authorization_header(request)
+        b64_string = self.extract_base64_authorization_header(auth_header)
+        decoded_string = self.decode_base64_authorization_header(b64_string)
+        email, pswd = self.extract_user_credentials(decoded_string)
+        return self.user_object_from_credentials(email, pswd)
