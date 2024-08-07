@@ -16,11 +16,11 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 
 
-auth = os.getenv('AUTH_TYPE')
-if auth == 'Auth':
+AUTH_TYPE = os.getenv('AUTH_TYPE')
+if AUTH_TYPE == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
-elif auth == 'basic_auth':
+elif AUTH_TYPE == 'basic_auth':
     from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
 
@@ -46,10 +46,11 @@ def forbidden(error) -> str:
     return jsonify({"error": "Forbidden"}), 403
 
 
-"""
+
 @app.before_request
 def before_request():
-     Executes before the request
+    """Executes before the request
+    """
     if auth is None:
         return
     # List of paths that do not require authentication
@@ -64,7 +65,7 @@ def before_request():
     # Check if the current user is valid
     if auth.current_user(request) is None:
         abort(403)
-"""
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
