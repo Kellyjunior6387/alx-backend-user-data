@@ -7,7 +7,7 @@ import binascii
 import base64
 from typing import Tuple, TypeVar
 
-from api.v1.auth.auth import Auth
+from .auth import Auth
 from models.user import User
 
 
