@@ -11,7 +11,6 @@ from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
 
 
-
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
@@ -44,6 +43,7 @@ def forbidden(error) -> str:
     """ Function to handle forbidden routes
     """
     return jsonify({"error": "Forbidden"}), 403
+
 
 """
 @app.before_request
