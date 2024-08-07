@@ -2,8 +2,10 @@
 """Session authentication module for the API.
 """
 from uuid import uuid4
-from models.user import User
+from flask import request
+
 from .auth import Auth
+from models.user import User
 
 
 class SessionAuth(Auth):
