@@ -15,15 +15,15 @@ from api.v1.auth.basic_auth import BasicAuth
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-auth = None
+#auth = None
 
-
+"""
 auth = os.getenv('AUTH_TYPE')
 if auth == 'Auth':
     auth = Auth()
 elif auth == 'basic_auth':
     auth = BasicAuth()
-
+"""
 
 @app.errorhandler(404)
 def not_found(error) -> str:
@@ -45,7 +45,7 @@ def forbidden(error) -> str:
     """
     return jsonify({"error": "Forbidden"}), 403
 
-
+"""
 @app.before_request
 def before_request():
     if auth is None:
@@ -62,7 +62,7 @@ def before_request():
     # Check if the current user is valid
     if auth.current_user(request) is None:
         abort(403)
-
+"""
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
