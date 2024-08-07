@@ -10,7 +10,7 @@ class Auth:
     """Authentication class.
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-         """Method to check if a path requires authentication
+        """Method to check if a path requires authentication
         """
         if path and excluded_paths:
             path = path.rstrip('/') + '/'
