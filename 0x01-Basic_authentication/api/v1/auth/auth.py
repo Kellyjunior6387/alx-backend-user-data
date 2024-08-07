@@ -21,8 +21,8 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """Method to check if the request has an authorisation header
         """
-        if request and request.headers.get('Authorization'):
-            return request.headers.get('Authorization')
+        if request:
+            return request.headers.get('Authorization', None)
 
     def current_user(self, request=None) -> TypeVar('User'):
         return None

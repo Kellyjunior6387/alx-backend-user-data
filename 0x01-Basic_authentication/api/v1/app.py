@@ -6,7 +6,6 @@ from os import getenv
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
-
 from api.v1.views import app_views
 
 
@@ -44,7 +43,6 @@ def forbidden(error) -> str:
     """ Function to handle forbidden routes
     """
     return jsonify({"error": "Forbidden"}), 403
-
 
 
 @app.before_request
