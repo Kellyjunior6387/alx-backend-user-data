@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Module to implement the Session authentication
 """
-import uuid
+from uuid import uuid4
 from api.v1.auth.auth import Auth
 
 
@@ -12,7 +12,6 @@ class SessionAuth(Auth):
 
     def create_session(self, user_id: str = None) -> str:
         if isinstance(user_id, str):
-            session_id = str(uuid.uuid4())
+            session_id = str(uuid4())
             self.user_id_by_session_id[session_id] = user_id
             return session_id
-        return None
