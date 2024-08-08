@@ -33,7 +33,6 @@ def session_handler() -> dict:
     user_dict.set_cookie(getenv("SESSION_NAME"), session_id)
     return user_dict
 
-
 @app_views.route(
     '/auth_session/logout', methods=['DELETE'], strict_slashes=False)
 def logout():
@@ -42,6 +41,7 @@ def logout():
       - An empty JSON object.
     """
     from api.v1.app import auth
-    if auth.destroy_session(request):
-        return jsonify({}), 200
-    abort(404)
+    is_destroyed = auth.destroy_session(request)
+    if not is_destroyed:
+        abort(404)
+    return jsonify({})
