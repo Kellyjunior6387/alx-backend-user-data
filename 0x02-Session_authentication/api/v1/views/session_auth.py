@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module to handle routes for session authentication"""
-from flask import Flask, request, abort, jsonify
+from flask import request, jsonify, make_response
 from os import getenv
 
 from models.user import User
@@ -29,6 +29,6 @@ def session_handler() -> dict:
         return jsonify({"error": "wrong password"}), 401
     from api.v1.app import auth
     session_id = auth.create_session(user.id)
-    user_dict = jsonify(user.to_json())
+    user_dict = make_response(jsonify(user.to_json()))
     user_dict.set_cookie(getenv("SESSION_NAME"), session_id)
     return user_dict
