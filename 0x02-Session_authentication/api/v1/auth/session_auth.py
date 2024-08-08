@@ -22,11 +22,15 @@ class SessionAuth(Auth):
             return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
-        """ Retrieves a user_idbased on the session id"""
+        """Retrieves the user id of the user associated with
+        a given session id.
+        """
         if type(session_id) is str:
-            return self.user_id_by_session_id.get(session_id, None)
+            return self.user_id_by_session_id.get(session_id , None)
 
-    def current_user(self, request=None):
+    def current_user(self, request=None) -> User:
+        """Retrieves the user associated with the request.
+        """
         if request:
             cookie = self.session_cookie(request)
             user_id = self.user_id_for_session_id(cookie)
