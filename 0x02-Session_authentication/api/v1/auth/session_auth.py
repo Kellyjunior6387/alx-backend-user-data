@@ -26,7 +26,7 @@ class SessionAuth(Auth):
         a given session id.
         """
         if type(session_id) is str:
-            return self.user_id_by_session_id.get(session_id , None)
+            return self.user_id_by_session_id.get(session_id, None)
 
     def current_user(self, request=None) -> User:
         """Retrieves the user associated with the request.
