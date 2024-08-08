@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module to handle routes for session authentication"""
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, abort
 from os import getenv
 
 from models.user import User
@@ -32,3 +32,14 @@ def session_handler() -> dict:
     user_dict = make_response(jsonify(user.to_json()))
     user_dict.set_cookie(getenv("SESSION_NAME"), session_id)
     return user_dict
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def logout():
+    """ Function to handle logging out
+    """
+    from api.v1.app import auth
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    abort(404)
