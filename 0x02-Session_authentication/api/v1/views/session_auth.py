@@ -18,7 +18,11 @@ def session_handler() -> dict:
         return jsonify({"error": "email missing"}), 400
     if not pswd:
         return jsonify({"error": "password missing"}), 400
-    user = User.search({'email': email})[0]
+    try:
+        user = User.search({'email': email})
+    except IndexError:
+        return jsonify({"error": "no user found for this email"}), 404
+    user = user[0] if user else None
     if not user:
         return jsonify({"error": "no user found for this email"}), 404
     if not user.is_valid_password(pswd):
