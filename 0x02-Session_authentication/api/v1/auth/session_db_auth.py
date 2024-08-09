@@ -15,6 +15,8 @@ class SessionDBAuth(SessionExpAuth):
     """
 
     def create_session(self, user_id=None) -> str:
+        """Creates and stores a session id for the user.
+        """
         if type(user_id) is str:
             session_id = str(uuid4())
             user = UserSession()
@@ -22,9 +24,11 @@ class SessionDBAuth(SessionExpAuth):
             user.session_id = session_id
             user.save()
             return session_id
-    
-    def  user_id_for_session_id(self, session_id=None):
-        """Retrieve the user id based on the session id"""
+
+    def user_id_for_session_id(self, session_id=None):
+        """Retrieves the user id of the user associated with
+        a given session id.
+        """
         try:
             user = UserSession.search({'session_id': session_id})
         except KeyError:
@@ -37,10 +41,14 @@ class SessionDBAuth(SessionExpAuth):
         if exp_time < cur_time:
             return None
         return user[0].user_id
-    
-    def destroy_session(self, request=None) -> None:
-        """Method to destroy the user instance"""
-        session_id = self.session_cookie(request)
-        user = UserSession.search({'session_id': session_id})
-        user[0].remove()
 
+    def destroy_session(self, request=None) -> bool:
+        """Destroys an authenticated session.
+        """
+        session_id = self.session_cookie(request)
+        try:
+            user = UserSession.search({'session_id': session_id})
+        except Exception:
+            return False
+        user[0].remove()
+        return True
