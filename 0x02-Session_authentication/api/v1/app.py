@@ -27,6 +27,9 @@ elif AUTH_TYPE == 'session_auth':
 elif AUTH_TYPE == 'session_exp_auth':
     from api.v1.auth.session_exp_auth import SessionExpAuth
     auth = SessionExpAuth()
+elif AUTH_TYPE == 'session_db_auth':
+    from api.v1.auth.session_db_auth import SessionDBAuth
+    auth = SessionDBAuth()
 
 
 @app.errorhandler(404)
@@ -62,15 +65,13 @@ def before_request():
     # Check if the path requires authentication
     if not auth.require_auth(request.path, excluded_paths):
         return
-    # Check if the authorization header is present
-    if auth.authorization_header(request) is None:
-        abort(401)
-    # Check if the cookie is present
-    if auth.session_cookie(request) is None:
+    # Check if the authorization header or cookie is present
+    if auth.authorization_header(request) is None and \
+                    auth.session_cookie(request) is None:
         abort(401)
     # Check if the current user is valid
     if auth.current_user(request) is None:
-        abort(403)
+       abort(403)
     request.current_user = auth.current_user(request)
 
 
