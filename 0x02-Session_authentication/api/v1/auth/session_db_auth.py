@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Authentication module for the API.
+"""Session authentication with expiration
+and storage support module for the API.
 """
-from uuid import uuid4
+from flask import request
 from datetime import datetime, timedelta
+from uuid import uuid4
 
-from .session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
-
+from .session_exp_auth import SessionExpAuth
 
 
 class SessionDBAuth(SessionExpAuth):
-    """ Session expiry Authentication class.
+    """Session authentication class with expiration and storage support.
     """
 
     def create_session(self, user_id=None) -> str:
