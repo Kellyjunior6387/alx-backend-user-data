@@ -20,7 +20,7 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def _generate_uuid() -> None:
+    def _generate_uuid(self) -> str:
         """Generate a random uuid"""
         return str(uuid4())
 
@@ -40,3 +40,13 @@ class Auth:
             return bcrypt.checkpw(password.encode(), user.hashed_password)
         except NoResultFound:
             return False
+
+    def create_session(self, email: str) -> str:
+        """Method to create a session in the DB"""
+        try:
+            user = self._db.find_user_by(email=email)
+            id = self._generate_uuid()
+            user.session_id = id
+            return id
+        except NoResultFound:
+            return None
