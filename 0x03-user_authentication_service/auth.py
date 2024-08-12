@@ -3,6 +3,7 @@
 import bcrypt
 from db import DB
 from user import User
+from uuid import uuid4
 from sqlalchemy.exc import InvalidRequestError, NoResultFound
 
 
@@ -18,6 +19,10 @@ class Auth:
 
     def __init__(self):
         self._db = DB()
+
+    def _generate_uuid() -> None:
+        """Generate a random uuid"""
+        return str(uuid4())
 
     def register_user(self, email: str, password: str) -> User:
         """Method to register a unregistered user"""
