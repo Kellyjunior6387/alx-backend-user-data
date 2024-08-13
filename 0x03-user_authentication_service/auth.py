@@ -13,8 +13,10 @@ def _hash_password(password: str) -> bytes:
     return hashed
 
 
-def _generate_uuid(self) -> str:
-    """Generate a random uuid"""
+def _generate_uuid() -> str:
+    """
+    Generate a random uuid and convert to string
+    """
     return str(uuid4())
 
 
