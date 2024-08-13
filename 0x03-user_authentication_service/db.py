@@ -46,14 +46,14 @@ class DB:
 
     def find_user_by(self, **kwargs: any) -> User:
         """Method to find a user by an argument"""
-        session = self._session
-        try:
-            user = session.query(User).filter_by(**kwargs).one()
-            return user
-        except NoResultFound:
-            raise NoResultFound
-        except InvalidRequestError:
-            raise InvalidRequestError
+        users = self._session.query(User)
+        for k, v in kwargs.items():
+            if k not in User.__dict__:
+                raise InvalidRequestError
+            for usr in users:
+                if getattr(usr, k) == v:
+                    return usr
+        raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs: any) -> None:
         """Method to update user"""
