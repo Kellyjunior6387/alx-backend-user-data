@@ -13,16 +13,17 @@ def _hash_password(password: str) -> bytes:
     return hashed
 
 
+def _generate_uuid(self) -> str:
+    """Generate a random uuid"""
+    return str(uuid4())
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
 
     def __init__(self):
         self._db = DB()
-
-    def _generate_uuid(self) -> str:
-        """Generate a random uuid"""
-        return str(uuid4())
 
     def register_user(self, email: str, password: str) -> User:
         """Method to register a unregistered user"""
@@ -45,7 +46,7 @@ class Auth:
         """Method to create a session in the DB"""
         try:
             user = self._db.find_user_by(email=email)
-            id = self._generate_uuid()
+            id = _generate_uuid()
             user.session_id = id
             return id
         except NoResultFound:
@@ -72,7 +73,7 @@ class Auth:
         if email:
             try:
                 user = self._db.find_user_by(email=email)
-                reset_token = self._generate_uuid()
+                reset_token = _generate_uuid()
                 self._db.update_user(user.id, reset_token=reset_token)
                 return reset_token
             except NoResultFound:
