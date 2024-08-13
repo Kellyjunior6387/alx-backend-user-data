@@ -5,7 +5,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import InvalidRequestError, NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -34,10 +35,14 @@ class DB:
     def add_user(self, email: str, hashed_password: str) -> User:
         """Method to add a user to the session
         """
-        user = User(email=email, hashed_password=hashed_password)
-        session = self._session
-        session.add(user)
-        session.commit()
+        try:
+            user = User(email=email, hashed_password=hashed_password)
+            session = self._session
+            session.add(user)
+            session.commit()
+        except Exception:
+            session.rollback()
+            user = None
         return user
 
     def find_user_by(self, **kwargs: any) -> User:
