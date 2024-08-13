@@ -77,13 +77,14 @@ class DB:
         Return:
             No return value
         """
-        session = self._session
         user = self.find_user_by(id=user_id)
         if user:
             try:
                 for key, value in kwargs.items():
                     if hasattr(user, key):
                         setattr(user, key, value)
-                        session.commit()
-            except ValueError:
+                        self._session.commit()
+                    else:
+                        raise ValueError
+            except NoResultFound:
                 raise ValueError
